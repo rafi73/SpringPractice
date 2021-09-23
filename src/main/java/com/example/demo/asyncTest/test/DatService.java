@@ -1,4 +1,4 @@
-package com.example.demo.asyncTest;
+package com.example.demo.asyncTest.test;
 
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.scheduling.annotation.Async;
