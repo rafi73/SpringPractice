@@ -8,23 +8,26 @@ import org.springframework.scheduling.annotation.EnableAsync;
 import org.springframework.scheduling.concurrent.ThreadPoolTaskExecutor;
 
 import java.util.concurrent.Executor;
+import java.util.concurrent.ForkJoinPool;
+import java.util.concurrent.ThreadPoolExecutor;
 
 @SpringBootApplication
-// @EnableAsync
+@EnableAsync
 public class DemoApplication {
 
   public static void main(String[] args) {
     SpringApplication.run(DemoApplication.class, args);
   }
 
-  //  @Bean
-  //  public Executor taskExecutor() {
-  //    ThreadPoolTaskExecutor executor = new ThreadPoolTaskExecutor();
-  //    executor.setCorePoolSize(2);
-  //    executor.setMaxPoolSize(2);
-  //    executor.setQueueCapacity(500);
-  //    executor.setThreadNamePrefix("MyThread-");
-  //    executor.initialize();
-  //    return executor;
-  //  }
+  @Bean("our-pool")
+  public Executor taskExecutor() {
+    ThreadPoolTaskExecutor executor = new ThreadPoolTaskExecutor();
+    executor.setCorePoolSize(8); // minimum thread live
+    executor.setMaxPoolSize(16); //
+    executor.setQueueCapacity(200); //
+    executor.setThreadNamePrefix("our.pool-");
+    executor.setRejectedExecutionHandler(new ThreadPoolExecutor.CallerRunsPolicy());
+    executor.initialize();
+    return executor;
+  }
 }
